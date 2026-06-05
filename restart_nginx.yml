@@ -1,0 +1,25 @@
+---
+- name: Reiniciar el Servicio Nginx
+  hosts: all
+  become: true
+
+  tasks:
+    - name: "Validar: Verificar el estado actual de Nginx"
+      ansible.builtin.shell: systemctl is-active nginx
+      register: nginx_before
+      ignore_errors: true
+
+    - name: "Monitoreo: Mostrar estado antes del reinicio"
+      ansible.builtin.debug:
+        msg: "Estado antes: {{ nginx_before.stdout }}"
+
+    - name: "Ejecución: Reiniciar el servicio Nginx"
+      ansible.builtin.shell: systemctl restart nginx
+
+    - name: "Validar: Verificar el estado de Nginx después del reinicio"
+      ansible.builtin.shell: systemctl is-active nginx
+      register: nginx_after
+
+    - name: "Monitoreo: Mostrar estado después del reinicio"
+      ansible.builtin.debug:
+        msg: "Estado después: {{ nginx_after.stdout }}"
