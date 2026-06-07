@@ -23,3 +23,23 @@
     - name: "Monitoreo: Mostrar estado después del reinicio"
       ansible.builtin.debug:
         msg: "Estado después: {{ nginx_after.stdout }}"
+
+    - name: "Estado: Estado del servicio"
+      ansible.builtin.set_fact:
+        estado: "{{ (nginx_after.stdout == 'active') | ternary('success', 'failed') }}"
+
+    - name: "Respuesta: Respuesta para ServiceNow" 
+      ansible.builtin.uri:
+        url: "https://dev267740.service-now.com/api/2067471/awx_remediation/result"
+        method: POST
+        user: admin
+        password: IgVB=7/Y4dxd
+        force_basic_auth: yes
+        body_format: json
+        body:
+          alert_sys_id: "{{ SN_ALERT_SYS_ID }}"
+          task_sys_id: "{{ SN_INCIDENT_SYS_ID }}"
+          status: "{{ estado }}"
+        validate_certs: false
+      delegate_to: localhost
+      run_once: true
