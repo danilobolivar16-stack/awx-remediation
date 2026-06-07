@@ -38,6 +38,6 @@
         body_format: json
         body:
           alert_sys_id: "{{ SN_ALERT_SYS_ID }}"
-          task_sys_id: "{{ SN_INCIDENT_SYS_ID }}"
+          incident_sys_id: "{{ SN_INCIDENT_SYS_ID }}"
           status: "{{ estado }}"
         validate_certs: false
