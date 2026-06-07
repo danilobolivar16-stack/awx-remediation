@@ -41,5 +41,3 @@
           task_sys_id: "{{ SN_INCIDENT_SYS_ID }}"
           status: "{{ estado }}"
         validate_certs: false
-      delegate_to: localhost
-      run_once: true
